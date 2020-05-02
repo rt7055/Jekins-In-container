@@ -1,3 +1,30 @@
 #Docker Run Command for Run Jekins in docker container
 
 sudo docker run -d --restart unless-stopped -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home --name jenkins-master jenkins/jenkins:lts
+
+##Create Custom Image for jenkins-slave
+
+#Dockerfile
+FROM evarga/jenkins-slave
+MAINTAINER Rohit Thakur <rt7055@gmail.com>
+RUN add-apt-repository ppa:openjdk-r/ppa && \
+    apt-get update && \
+    apt install openjdk-11-jdk
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
+
+#build the image with tag
+
+sudo docker build -t jenkins-slave:1.0.0 .
+
+# changes in /lib/systemd/system/docekr.service file
+
+-H unix:// -H tcp://0.0.0.0:4243
+
+#Install docker plugin in jenkins
+
+enter docker host URI <specify the Private IP of the VM>:<docker_port>
+
+In advance specify the label,name and docker image name which we customized.
+
+
