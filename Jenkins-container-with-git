@@ -1,0 +1,13 @@
+#Docker File for create customized image by installing git and java
+
+FROM evarga/jenkins-slave
+MAINTAINER Rohit Thakur <rt7055@gmail.com>
+RUN  DEBIAN_FRONTEND="noninteractive" apt-get -q update && \
+    DEBIAN_FRONTEND="noninteractive" apt-get -q upgrade -y && \
+    DEBIAN_FRONTEND="noninteractive" apt-get -q install -y git
+RUN add-apt-repository ppa:openjdk-r/ppa && \
+    apt-get update && \
+    apt install -y openjdk-11-jdk
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
